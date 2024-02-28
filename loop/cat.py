@@ -48,7 +48,7 @@ def get_number():
 def meow(n):
     for _ in range(n):
         print("meow")
-    
+    #range是数值0，1，2
 main()   
 
 
