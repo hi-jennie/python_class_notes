@@ -39,8 +39,8 @@ while True:
 print(f"x is {x}")
 #没有valueerror的时候就会break并执行最后的print
 #不能else：  print(f"x is {x}")，这样就会一直循环知识打印的对象变了
-"""
 
+5.
 def main():
     x = get_int()
     print(f"x is {x}")
@@ -53,11 +53,22 @@ def get_int():
            return x #return其实本身表示break and return
         except ValueError:
             pass    #print("x is not a integer")
-        
-            
-        
+               
 main()
-       
+"""      
+
+def main():
+    x = get_int("What's x?")
+    print(f"x is {x}")
 
 
+def get_int(prompt):
+    while True:
+        try:
+           x = int(input(prompt))
+           return x #return其实本身表示break and return
+        except ValueError:
+            pass    #print("x is not a integer")
+               
+main()
 
