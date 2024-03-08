@@ -1,6 +1,5 @@
-str = input("").replace(":)","🙂")
+str = input("").replace(":)", "🙂")
 
-str = str.replace(":(","🙁")
+str = str.replace(":(", "🙁")
 
-print(str,end="")
-
+print(str, end="")

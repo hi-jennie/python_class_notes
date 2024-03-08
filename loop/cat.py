@@ -1,4 +1,3 @@
-
 """
 1.
 i = 3
@@ -26,7 +25,7 @@ while True:
     n = int(input("What's n ?"))
     if n > 0:
         break
-    
+
 for _ in range(n):
      print("meow")
 
@@ -37,7 +36,8 @@ while True 是一个无限循环的命令。而是if n > 0是给定的打破这�
 def main():
     number = get_number()
     meow(number)
-    
+
+
 def get_number():
     while True:
         n = int(input("What's n ?"))
@@ -45,13 +45,11 @@ def get_number():
             break
     return n
 
+
 def meow(n):
     for _ in range(n):
         print("meow")
-    #range是数值0，1，2
-main()   
+    # range是数值0，1，2
 
 
-  
-
- 
+main()

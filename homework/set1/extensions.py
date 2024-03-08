@@ -1,16 +1,16 @@
-#文件扩展名 (ext)，媒体类型 (mime_type)/   folder.items(): 表示遍历字典 folder 中的所有键值   /endswith(ext)检查文件名是否以给定的后缀 ext 结尾
+# 文件扩展名 (ext)，媒体类型 (mime_type)/   folder.items(): 表示遍历字典 folder 中的所有键值   /endswith(ext)检查文件名是否以给定的后缀 ext 结尾
 
 
 file_name = input("filename:").strip()
 
 folder = {
-".gif":"image/gif",
-".jpg":"image/jpeg",
-".jpeg":"image/jpeg",
-".png":"image/png",
-".pdf":"application/pdf",
-".txt":"text/plain",
-".zip":"application/zip"
+    ".gif": "image/gif",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".pdf": "application/pdf",
+    ".txt": "text/plain",
+    ".zip": "application/zip",
 }
 """
 自己的错误写法🙅😭，难顶嗷
@@ -21,7 +21,7 @@ for i in folder:
         break
     else:
         print("application/octet-stream")
-"""       
+"""
 
 
 for ext, mime_type in folder.items():
@@ -30,7 +30,7 @@ for ext, mime_type in folder.items():
         break
 else:
     print("application/octet-stream")
-    
+
 """
     
 for 关键字表示开始一个循环。

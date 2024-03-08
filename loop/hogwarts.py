@@ -34,18 +34,14 @@ for student in students:
     print(student,students[student],sep=",")
 
 """
-#每个人都是一个dict，list里面插入dict
+# 每个人都是一个dict，list里面插入dict
 
 students = [
-    {"name":"wangxue","house":"chengdu","age":"24"},
-    {"name":"ldp","house":"chengdu","age":"28"},
-    {"name":"aobai","house":"chengdu","age":"2"},
-    {"name":"Turkey","house":"America","age":"2"}
+    {"name": "wangxue", "house": "chengdu", "age": "24"},
+    {"name": "ldp", "house": "chengdu", "age": "28"},
+    {"name": "aobai", "house": "chengdu", "age": "2"},
+    {"name": "Turkey", "house": "America", "age": "2"},
 ]
-     
+
 for student in students:
-    print(student["name"],student["house"],student["age"],sep=",")
-        
-
-
-
+    print(student["name"], student["house"], student["age"], sep=",")

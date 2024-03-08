@@ -9,13 +9,13 @@ def main():
         print("dinner time")
     else:
         pass
-        
 
 
 def convert(m):
-    number = m.replace(":"," ").split()
+    number = m.replace(":", " ").split()
     n = int(number[0]) + int(number[1]) / 60
     return n
+
 
 if __name__ == "__main__":
     main()

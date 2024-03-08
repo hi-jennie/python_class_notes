@@ -1,6 +1,7 @@
-#随机生成——random.choice,random.randint,random.shuffle
+# 随机生成——random.choice,random.randint,random.shuffle
 
 import random
+
 # import random中的所有module
 """
 coin = random.choice(["heads","tails"])
@@ -20,7 +21,7 @@ number = random.randint(1,10)#1-10之间的随机int，包括1和10
 print(number)
 """
 
-cards = ["jack","queen","king"]
-random.shuffle(cards) #shuffle是打乱cards这个list里面内容物的顺序
+cards = ["jack", "queen", "king"]
+random.shuffle(cards)  # shuffle是打乱cards这个list里面内容物的顺序
 for card in cards:
     print(card)

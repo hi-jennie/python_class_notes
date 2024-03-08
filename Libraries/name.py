@@ -1,14 +1,14 @@
-#command-line arguments  sys.argv, sys.exit,slices[1:],[1:-1]表示从第二位开始到倒数第二位
+# command-line arguments  sys.argv, sys.exit,slices[1:],[1:-1]表示从第二位开始到倒数第二位
 
 import sys
+
 if len(sys.argv) < 2:
     sys.exit("too few arguments")
 
-for arg in sys.argv[1:]:  #[1:]slices就是取一个集合里面的自己8，[1:]表示取sys.argv里从第二位开始的所有arguments，不包括[0]
+for arg in sys.argv[
+    1:
+]:  # [1:]slices就是取一个集合里面的自己8，[1:]表示取sys.argv里从第二位开始的所有arguments，不包括[0]
     print("hello,my name is", arg)
-
-
-    
 
 
 """
