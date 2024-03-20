@@ -16,8 +16,10 @@ def magic_bubble_sort(numbers):
 
             if should_swap:
                 numbers[i], numbers[i + 1] = numbers[i + 1], numbers[i]
+                
 
         stop_position -= 1
+        
     print(numbers)
 
 
