@@ -290,3 +290,238 @@ letters = ['a', 'b', 'c', 'd']
 for item in itertools.zip_longest(numbers, letters, fillvalue=None):
     print(item)
 ```
+
+
+10. file.read()方法
+在 Python 中，你可以使用 while 循环和 read() 方法来分块读取文件。这对于处理大文件或避免内存不足非常有用。如果文件没有换行，这种方法相当于手动换行，接受的参数相当于每次读取的步长。
+
+首先，让我们看一下如何使用 read() 方法分块读取文件。以下是一个示例代码：
+```python
+with open("data.csv", "r", encoding="utf-8") as file:
+    chunk_size = 10  # 每次读取的行数
+    while True:
+        chunk = file.read(chunk_size)
+        if not chunk:
+            break
+        # 对 chunk 进行数据处理
+        print(chunk)
+```
+在这个示例中，我们打开了名为 data.csv 的文件，每次读取 10 行数据，并对每个数据块进行处理。
+
+
+11. partial ()方法 from functool 
+在 Python 中，partial 函数允许我们固定某个函数的一部分参数，从而生成一个新的函数。这对于处理大文件、简化回调、参数固定和代码重用非常有用。让我们来详细了解一下 partial 函数的
+```python
+#示例1
+from functools import partial
+
+def f(a, b, c, x):
+    return 1000 * a + 100 * b + 10 * c + x
+
+g = partial(f, 3, 1, 4)
+print(g(5))  # 输出：3145
+
+#示例2
+from functools import partial
+
+def add(a, b, c):
+    return 100 * a + 10 * b + c
+
+add_part = partial(add, c=2, b=1)
+print(add_part(3))  # 输出：312
+
+```
+
+12. @lru_cache 装饰器
+在 Python 中，你可以使用 @lru_cache 装饰器来实现缓存功能，从而提高函数的性能。这个装饰器使用**最近最少使用（LRU）**策略，将函数的结果缓存起来，避免重复计算。**第二次使用同样的参数调用函数，他会直接将上次计算后的结果缓存起来，避免再次出发计算逻辑。**
+```python 
+from functools import lru_cache
+
+@lru_cache(maxsize=None)  # maxsize 参数决定缓存的大小
+def expensive_calculation(n):
+    # 假设这里有一个昂贵的计算
+    return n * n
+
+result1 = expensive_calculation(5)  # 第一次计算
+result2 = expensive_calculation(5)  # 直接从缓存中获取结果
+
+print(f"结果1: {result1}")
+print(f"结果2: {result2}")
+
+```
+使用 @lru_cache 可以优化递归函数、I/O 密集型操作、数据库查询等。
+注意：@lru_cache 只在同一个 Python 进程中有效，不适用于多个子进程或多次运行相同脚本的情况。
+通过使用 @lru_cache，你可以有效地提高函数的性能，避免不必要的计算，从而优化你的 Python 代码。
+
+13.functools.wraps() 
+functools.wraps 是 Python 中的一个装饰器，用于保留被装饰函数的元数据。让我们深入探讨一下它的作用和实现。
+
+作用：
+@wraps(func) 的主要目的是**消除装饰器对原函数造成的影响**，确保被装饰的函数保留原来的函数名和文档字符串。
+**当一个函数被修饰时，它的 __name__ 属性将保持为装饰器函数的名字，而不是被修饰函数的名字**.
+实现：
+```python 假设我们有一个装饰器，它记录函数的执行时间：
+import time
+from functools import wraps
+
+def timing_decorator(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"Function '{func.__name__}' took {end_time - start_time:.4f} seconds to execute.")
+        return result
+    return wrapper
+
+@timing_decorator
+def slow_function():
+    # Simulate a time-consuming operation
+    time.sleep(2)
+    print("Slow function executed.")
+
+slow_function()
+print(f"Function name after decoration: {slow_function.__name__}")
+
+```
+在这个例子中，timing_decorator 是一个装饰器，它测量被装饰函数的执行时间并打印出来。我们使用 @wraps(func) 来确保被装饰的函数 slow_function 保留了原来的函数名和文档字符串。如果我们不使用 @wraps，slow_function 的 __name__ 属性将变成 wrapper，而不是我们期望的 slow_function。
+
+运行上述代码，你会看到类似以下的输出：
+
+Slow function executed.
+Function 'slow_function' took 2.0003 seconds to execute.
+Function name after decoration: slow_function
+
+14. reduce 函数
+reduce 是 Python 内置的高阶函数之一，用于将一个二元操作函数（接受两个参数）应用于序列的元素，从而将序列归约为单一的值1.
+它的主要目的是对数据集合（链表、元组等）中的所有数据进行累积操作。具体来说，**reduce 会先对集合中的第 1、2 个元素进行操作，得到的结果再与第三个数据用函数运算，最终得到一个结果**
+```python
+#假设我们有一个列表 [1, 2, 3, 4, 5]，我们想计算它们的和。我们可以使用 reduce 来实现这个目标：
+
+
+from functools import reduce
+
+def add(x, y):
+    return x + y
+
+result = reduce(add, [1, 2, 3, 4, 5])
+print("列表和:", result)  # 输出：15
+
+#另一种使用匿名函数的方式：
+
+
+result_lambda = reduce(lambda x, y: x + y, [1, 2, 3, 4, 5])
+print("使用 lambda 匿名函数:", result_lambda)  # 输出：15
+```
+
+15. group 函数：
+在 Python 中，正则表达式的 group 和 groups 方法是非常有用的函数，用于处理匹配结果的分组信息。
+
+**group 函数**：
+group 方法是 re.MatchObject 类中的一个函数，用于返回匹配对象的整个匹配结果或特定的分组匹配结果。
+当 group 方法不带参数时，它将返回整个匹配结果。
+例如，以下代码将匹配字符串中的数字和字母，并返回整个匹配结果：
+```python
+import re
+text = "abc123def456"
+pattern = "\\w+"
+match = re.search(pattern, text)
+print(match.group())
+```
+这段代码将输出：abc123def456。在这个例子中，正则表达式 \\w+ 匹配了整个字符串中的所有数字和字母，group 方法返回了整个匹配结果。
+
+group 方法还可以用于返回指定分组的匹配结果。每个分组都可以通过小括号括起来，用于将匹配结果分成多个组。例如，以下代码将匹配字符串中的数字和字母，并返回匹配到的第一个数字和字母：
+```python
+text = "abc123def456"
+pattern = "(\\d+) (\\w+)"
+match = re.search(pattern, text)
+print(match.group(1))  # 输出：123
+print(match.group(2))  # 输出：def
+```
+在这个例子中，正则表达式 (\\d+) (\\w+) 匹配了字符串中的一个或多个数字和字母。(\\d+) 匹配了一个或多个数字，(\\w+) 匹配了一个或多个字母。
+当正则表达式没有匹配到字符串中的任何内容时，调用 group 方法将会抛出 AttributeError 异常。因此，在调用 group 方法之前，应该先使用 re.search 等方法进行匹配，并使用返回值检查是否有匹配结果。
+
+**groups 函数**：
+groups 方法是 re.MatchObject 类的一个函数，用于返回所有分组匹配结果组成的元组。
+该方法不接受任何参数。
+例如，以下代码将匹配字符串中的电话号码，并返回其中的区号和电话号码：
+```python
+text = "My phone number is (123)456-7890"
+pattern = r"(\d{3}) (\d{3}-\d{4})"
+match = re.search(pattern, text)
+print(match.groups())  # 输出：('123', '456-7890')
+```
+
+16. map() 和 filter()
+**map() 函数**：
+功能：map() 函数用于映射，将一个序列的每个元素映射到指定的函数中，然后返回一个迭代对象。
+使用格式：map(function, iterable...)
+示例：
+```python
+def square(x):
+    return x**2
+
+# 使用map将square函数应用到列表中的每个元素
+result = list(map(square, [1, 2, 3]))
+print(result)  # 输出：[1, 4, 9]
+
+# 也可以使用匿名函数lambda
+result_lambda = list(map(lambda x: x**2, [1, 2, 3]))
+print(result_lambda)  # 输出：[1, 4, 9]
+```
+注意：要使用list()将迭代对象转换为列表。
+
+
+**filter() 函数**：
+功能：filter() 函数用于过滤，将一个序列的每个元素映射到指定的函数中，返回结果为 True 的元素。
+使用格式：filter(function, iterable...)
+示例：
+```python
+# 过滤出能被2整除的元素
+filtered_result = list(filter(lambda x: x % 2 == 0, [1, 2, 3]))
+print(filtered_result)  # 输出：[2]
+```
+17. itemgetter()： 用于从序列（如列表、元组、字典等）中获取指定的元素。
+
+    功能：
+    itemgetter() 用于从序列中获取指定的元素。
+    它可以根据索引或键来提取元素。
+    如果提取的是多个值，函数会将它们放在一个元组中返回。
+
+    使用格式：
+    itemgetter(item) 或 itemgetter(*item)
+    参数可以是序列中的索引或键。
+
+
+```python
+# 1.从列表中获取元素
+import operator
+
+sampleList = ["macOS", "Windows", "Linux"]
+# 获取索引为2的元素
+result = operator.itemgetter(2)(sampleList)
+print(result)  # 输出：Linux
+
+# 2.从字典中获取键对应的值：
+
+sampleDict = {'Product': 'iPhone 13 Pro Max', 'Company': 'Apple'}
+# 获取键为'Product'的值
+result_dict = operator.itemgetter('Product')(sampleDict)
+print(result_dict)  # 输出：iPhone 13 Pro Max
+
+# 3.对字典列表按键排序：
+
+phones = [
+    {'PhoneName': 'Apple', 'PhonePrice': 113000},
+    {'PhoneName': 'Samsung', 'PhonePrice': 109999},
+    {'PhoneName': 'OnePlus', 'PhonePrice': 69000}
+]
+# 按照'PhoneName'键排序
+sorted_phones = sorted(phones, key=operator.itemgetter('PhoneName'))
+print(sorted_phones)
+# 输出：[{'PhoneName': 'Apple', 'PhonePrice': 113000},
+#        {'PhoneName': 'OnePlus', 'PhonePrice': 69000},
+#        {'PhoneName': 'Samsung', 'PhonePrice': 109999}]
+```
+
+
