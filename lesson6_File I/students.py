@@ -11,7 +11,7 @@ students = []
 with open("family.csv") as file:
     for line in file:
         name,house = line.rstrip().split(",") #unpack
-        student.append(f"{name} is in {house}")
+        student.append(f"{name} is in {house}") #append的是字符串
 
 for student in sorted(students):
     print(student)
@@ -27,7 +27,7 @@ with open("family.csv") as file:
         student["name"] = name #变量name
         student["house"] = house
         #tighten:student = {"name":name, "house":house}
-        students.append(student)
+        students.append(student) #append的是dict
 
 def get_name(student):
     return student["name"]
