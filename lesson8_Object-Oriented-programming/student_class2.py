@@ -4,10 +4,6 @@
 class Student:
     
     def __init__(self, name, house, gender): 
-        if not name:
-            raise ValueError("Missing name")
-        if house not in ["China","SiChuan","DeYang"]:
-            raise ValueError("Invalid house")
         self.name = name
         self.house = house
         self.gender = gender #instance variable
@@ -37,12 +33,27 @@ class Student:
         if house not in ["China","SiChuan","DeYang"]: 
             raise ValueError("Invalid house ")
         self._house = house
+        
+    @property
+    def name(self):
+        return self._name
     
+    @name.setter
+    def name(self,name):
+        if not name:
+            raise ValueError("Missing name")
+        self._name = name   
+
+
+
 def main():
     student = get_student()
-    student.house = "ChenDu" # 通过这样的方式，调用class的人可以修改student这个boject里面的值，这样会比较危险,修改后的house.setter可以阻止这个行为
+    #student.house = "ChenDu" # 通过这样的方式，调用class的人可以修改student这个boject里面的值，这样会比较危险,修改后的house.setter可以阻止这个行为
     # 注意：student.house 后面如果没有根“=”，那么他会直接调用（getter）student的instance variable————self._house
     #但是，如果student.house后面跟了“=”，计算机就会自动识别这是在重置setstudent.house的值，就会去找student类里面student.house的setter并阻止其修改行为
+    student._house = "Chendu"
+    # 注意：虽然 student.house = "ChenDu"会触发house的setter从而不可以修改student.house 的值
+    #但是 student._house = "Chendu"的值是可以被修改的
     print(f"{student.name} from {student.house}")
     print(student.gender_identify()) # 通过这样的方式调用自己定义的功能性函数
     
@@ -52,4 +63,5 @@ def get_student():
     gender = input("gender: ")
     return Student(name,house,gender)
 
-main()
+if __name__ == "__main":
+    main()
