@@ -84,6 +84,31 @@ def operation():
         elif action[0]=="reverse":
             final_list.reverse()
 
+def hash_to():
+    n = int(input())
+    integer_list = tuple(map(int, input().split()))
+    print(hash(integer_list))
+      
 
-      
-      
+# 这个swap_case函数会遍历字符串s中的每个字符，如果字符是小写，就转换为大写，如果字符是大写，就转换为小写，然后将结果返回。    
+
+def wrong_swap_case(s):
+    for i in s:
+        if i in ["a"-"z"]:
+            s = s.replace("i","i.upper()")
+        if i in ["A"-"Z"]:   
+            s = s.replace("i","i.lower()")
+# print(swap_case())
+
+def right_swap_case(s):
+    result = ""
+    for i in s:
+        if i.islower():
+            result += i.upper()
+        elif i.isupper():
+            result += i.lower()
+        else:
+            result += i
+    return result
+
+print(right_swap_case("SJHDFksjhf"))
