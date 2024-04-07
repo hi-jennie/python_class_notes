@@ -1377,3 +1377,49 @@ def foo():
 
 foo()
 ```
+
+# 4.recursion
+递归
+递：一直传参数
+归：返回
+* 不断调用自己本身
+* 有明确的终止条件
+1. 递归的最大深度——官方说明：1000，实际测试：997-998
+```python
+# 死递归——无效递归，没有终止条件
+def func():
+    print(1)
+    func()
+func()
+
+def func1(n):
+    if n == 3:
+        return "Jennie"
+    return func(n+1)
+
+func1(1)
+    return func1(2)
+            return func(3)
+                if i == 3: # 满足条件
+                    return "Jennie"
+
+def age(n):
+    if n == 3:
+        return 38
+    return age(n+1)-2
+age(1) # 34
+
+
+name = ["wangxue","Jennie",["王雪","刘晓波",["鳌拜","turkey"]]]
+
+def print_name(lst):
+    for name in lst:
+        if type(i) == list:
+            print_name(name)
+        else:
+            print(i)
+print_name(name)
+        
+```
+
+# 2024.4.7
