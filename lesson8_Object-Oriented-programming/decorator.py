@@ -1,11 +1,16 @@
+def count_substring(string, sub_string):
+    count = 0
+    l = len(sub_string)
+    for i in range(len(string)):
+        if i + l <= len(string) and string[i:i+l] == sub_string:
+            count +=1
+    return count
 
-name = ["wangxue","Jennie",["王雪","刘晓波",["鳌拜","turkey"]]]
+if __name__ == '__main__':
+    string = input().strip()
+    sub_string = input().strip()
+    
+    count = count_substring(string, sub_string)
+    print(count)
 
-def print_name(lst):
-    for i in lst:
-        if type(i) == list:
-            print_name(i)
-        else:
-            print(i)
-print_name(name)
-        
+

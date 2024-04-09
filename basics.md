@@ -1421,5 +1421,413 @@ def print_name(lst):
 print_name(name)
         
 ```
+* 练习
+```python
+# 实现一个装饰器，限制改函数被调用的频率，如三秒一次
+import time
+def wrapper(func):
+    start_time = 0
+    def inner(*args,**kwargs):
+        nonlocal start_time
+        if time.time() - start_time >= 3:
+            start_time = time.time()
+            func(*args,**kwargs)
+        else:
+            print("被限制了")
+    return inner
 
-# 2024.4.7
+@wrapper
+def func():
+    print("execute successfully")
+    
+        
+while True:
+    func()
+    time.sleep(1)
+
+
+```
+```python
+'''
+jd--Jennie:123
+tb--Jennie:456
+'''
+login_dic = {
+  "jd":False,
+  "tb":False  
+}
+def auth(flag):
+    def wrapper(func):
+        def inner(*args,**kwargs):
+            if login_dic[flag]:
+                func(*args,**kwargs)
+            else:
+                # 这块登录功能最好是拿出去封装起来
+                username = input("username: ")
+                pwd = input("password: ")
+                with open(flag, "r",encoding="utf-8") as fp:
+                    for line in fp:
+                        file_name, file_pwd = line.strip().split(":")
+                        if file_name == username and file_pwd == pwd:
+                            login_dic[flag] = True
+                            print("login successfully")
+                            func(*args,**kwargs)
+                            break
+                        else:
+                            print("密码错误“)
+        return inner
+    return wrapper
+@auth("jd")
+def jd_index():
+    print("This is jd index")
+
+@auth("jd")
+def jd_shopping():
+    print("This is jd shopping")
+
+@auth("tb")
+def tb_index():
+    print("This is tb index")
+
+@auth("tb")
+def tb_shopping():
+    print("This is tb shopping")
+func_dic = {
+    "1": jd_index,
+    "2": jd_shopping,
+    "3": tb_index,
+    "4": tb_shopping,
+    "5": exit
+ }  
+
+while True:
+    choose = input("command: ")
+    if choose in func_dic:
+        func_dic[choose]()
+    else:
+        print("please input right command")
+
+```
+# 2024.4.8
+1. __模块的使用及导入__
+    * 模块module:.py文件就是一个模块
+        * 直接使用
+        * 以文件的形式管理代码
+        * 模块的分类：自定义模块/内置模块（标准库）/第三方模块（类库）
+
+    自定义模块：自己写的.py文件
+    * 导入方式1：import decorator——将文件中的所有内容都拿来 decorator.——访问里面具体的内容
+                import decorator
+                import decorator
+                import decorator
+                不管导入多少次，只执行一个
+
+    * 导入方式2：
+        * import _ from decorator(import _ from decorator as __)
+        * from decorator inport * (也是导入所有)
+        * from decorator inport _, __
+    ```python
+    # 导入绝对模块
+    import sys
+    sys.path.append("绝对路径")
+
+    import 该绝对路径下的py文件
+
+    ```
+    * 导入顺序：内存 > 内置 > sys.path
+    sys.modules——查看内存中所有的模块
+
+    * 模块安装 ：pip install 模块名
+    * 模块的用途：
+        * 当做脚本被执行
+        * __当做模块被执行__
+        if __name__ == "__main__" 启动接口，不然在import decorator这一步函数就会被调用，加上启动接口，则需要通过decorator.进入之后才能调用
+
+2. __time__ 
+    time.time:拿到一个时间戳 浮点型
+    time.sleep:睡眠
+* 分类：
+    * 时间戳——给程序猿做计算 19824.9238467 time.time()
+    * 结构化时间 time.localtime()
+    * 字符串时间——给用户看的 2024年4月8日19:56:55 time.localtime()
+    ```python
+    time.time() # 时间戳
+    t = time.localtime(time.time()) # 结构化时间
+    time.strftime("%Y-%m-%d %H:%M:%S",t) # 结构化时间转成字符串时间
+    print(t.tm_year)
+
+    str_time = "2024-4-8 19:56:55"
+    t_time = time.strptime(str_time,"%Y-%m-%d %H:%M:%S") # 时间戳转为结构化时间
+    print(time.mktime(t_time)) # 转为时间戳
+
+    ```
+3. datetime:封装了time，在time的基础上增加了新的功能
+```python
+from datetime import datetime
+from datetime import timedelta
+print(datetime.now()) # 获取当前时间(2024-04-08 20:31:41.740497)(时间对象)
+str_time = "2024-4-8 19:56:55"
+print(datetime(2024,4,8,19,56,14)) # 自定义时间
+print(datetime.strptime(str_time,"%Y-%m-%d %H:%M:%S"))  # 将字符串时间转换成可以操作的时间(时间对象），比如时间的加减
+print(datetime.strptime(str_time,"%Y-%m-%d %H:%M:%S") - date.time(2024,1,3))
+
+import time 
+t = time.time()
+print(datetime.fromtimestamp(t) - datetime(2020,1,20)) # 时间戳转时间对象
+
+print(date.time.strftime(datetime.now(),"%Y-%m-%d %H:%M:%S")) # 时间对象转成字符串时间
+print(datetime.timestamp(datetime.now())) # 时间对象转换成时间戳
+
+from datetime import timedelta
+print(datetime.now() - timedelta(days=100))
+```
+
+4. random:随机数
+应用场景：
+验证码
+```python
+import random
+
+print(random.random()) # 0-1随机小数
+print(random.randint(1, 10)) # 1-10随机整数
+
+lst = [1,2,3,4,5,6]
+
+print(random.randrange(1,100,2))
+
+print(random.choice(lst)) # 从列表选择一个
+
+print(random.choice(lst,k=2)) # 从列表随机选两个，但是会有重复
+
+print(random.sample(lst,k=2)) # 从列表随机选两个，不重复
+
+print(random,shuffle(lst)) # 打乱list
+
+print([chr(i) for i in range(65,91)]) # 字母大写
+print([chr(i) for i in range(97,123)]) # 字母小写
+
+
+lst1 = [chr(i) for i in range(65,91)] + [chr(i) for i in range(97,123)] + [i for i in range(10)]
+
+new_lst = random.sample(lst1,k=4)
+print("".join(new_lst))
+```
+5. 序列化（json，pickle）
+序列化：将特殊的数据转换成字符串
+反序列化：将字符串转换成特殊的数据（字典等）
+文件：dump，load
+字符串：dumps，loads
+
+```python
+import json
+# 1.反序列,字符串转dic
+# json要求所有的key和value用双引号,且只能序列dict和list，但是所有语言共有的
+s = '{"Jennie":"Ruetin"}' # 知识看着像字典，实际上是string
+new_s = json.loads(s)
+print(new_s,type(new_s))
+
+
+# 2.序列化，dic转字符串
+dic = {"Jennie":"Ruetin"}
+str_ = json.dumps(dic, ensure_ascii=False)
+print(str_,repr(str_))
+
+# 3.文件序列化
+dic2 = {"Jennie":"Ruetin"}
+f = open("Jennie.txt","a",encoding="utf-8")
+f.write(json.dump(dic2) + "\n")
+
+# 4.文件反序列化
+f = open("Jennie.txt","r",encoding="utf-8")
+for i in f:
+    print(json.load(i))
+
+```
+```python
+# pickle是python独有的，和其他语言的交互性不强
+import pickle
+
+def func():
+    print(1)
+
+# 转成对象
+s = pickle.dumps(func)
+print(s)
+
+func1 = pickle.loads(s)
+func1()
+
+```
+
+6. os——通过程序与操作系统交互
+* 四个维度：
+    * 文件夹（创建和删除）
+        * os.makedirs("a/b/c/d") 递归创建多个文件夹 a下面是b文件夹，b下面又创建c文件夹
+        * os.removedirs("a/b/c/d") 删除多个文件夹
+        * os.mkdir("a") 创建一个文件夹
+        * os.rmdir("a") 删除一个文件夹
+        * os.listdir("文件夹绝对路径") 查看文件夹下文件
+    * 文件
+        * os.rename 重命名
+        * os.remove 删除文件
+    * 路径
+        * os.getcwd() 获取当前文件工作路径  /Users/jennie/python_class_notes/lesson8_Object-Oriented-programming
+        * os.chdir   cd切换文件夹
+        * os.path.abspath   获取绝对路径
+        * os.path.dirname(r"/Users/jennie/python_class_notes/lesson8_Object-Oriented-programming...py") 返回上一层
+        * os.path.basename(r"/Users/jennie/python_class_notes/lesson8_Object-Oriented-programming...py")  拿到文件名
+        * os.path.join("/Users/jennie/python_class_notes","lesson4","decorator.py") 路径拼接到一起
+        * os.path.exists("/Users/jennie/python_class_notes") 判断路径是否存在
+        * os.path.getsize(r"/Users/jennie/python_class_notes/lesson8_Object-Oriented-programming...py") 获取文件大小
+        * os.path.isabs 判断是否是绝对路径
+        * os.path.isdir() 判断是否是存在的文件夹
+        * os.path.isfile() 判断是否是存在的文件
+    * 其他
+
+7. 与python解释器做交互
+
+* import sys
+    * sys.path 模块导入的顺序列表
+    * sys.argv () command-line parameter,第一个参数是当前文件名[0]
+    * sys.version 查看python的版本
+    * sys.modules 查看已经加载的模块
+    * sys.platform 查看什么系统  我的  darwin
+
+8. hashlib :加密
+md5,sha1,sha256,sha512——加密级别，逐步提高
+Jennie：Jennie123 密码
+
+加密：明文——字节——密文      不可逆，不能破解
+明文如果是一致的，那么密文也是一致的
+
+* 使用场景：
+    * 用户注册的过程 Jennie123——字节——密文——存储
+    * 登录： Jennie——字节——密文——读取——校验
+```python
+import hashlib
+user = "Jennie"
+pwd = "Jennie123"
+
+# 1.存储
+s = hashlib.md5()  # 初始化一个加密模板 hashlib.sha1(）等
+s.update(pwd.encode("utf-8"))  # 添加要加密的字节
+m = s.hexdigest() # 加密
+print(m)
+f = open("Jennie.txt","a",encoding="utf-8")
+f.write(f"{user}:{m}\n")  # 存储进文件
+
+# 2.登录
+user = "Jennie"
+pwd = "Jennie123"
+s = hashlib.md5()  
+s.update(pwd.encode("utf-8")) 
+m = s.hexdigest()
+f = open("Jennie.txt","r",encoding="utf-8")
+for i in f:
+    file_user,file_pwd = i.strip().split(":")
+    if user == file_user and m == file_pwd:
+        print("login")
+        break
+    else:
+        print("wrong password")
+
+# 动态加盐
+def register():
+    user = input("name: ")
+    pwd = input("password: ")
+    s = hashlib.md5(user.encode("utf-8"))  # 将用户名作为动态加盐  
+    s.update(pwd.encode("utf-8")) 
+    m = s.hexdigest()
+    f = open("Jennie.txt","a",encoding="utf-8")
+    f.write(f"{user}:{m}\n")  # 存储进文件
+
+def login():
+    user = input("name: ")
+    pwd = input("password: ")
+    s = hashlib.md5(user.encode("utf-8"))  # 将用户名作为动态加盐  
+    s.update(pwd.encode("utf-8"))
+    f = open("Jennie.txt","r",encoding="utf-8")
+    for i in f:
+        file_user,file_pwd = i.strip().split(":")
+        if user == file_user and m == file_pwd:
+            print("login")
+            break
+        else:
+            print("wrong password") 
+
+msg = '''
+1.注册
+2.登录
+
+'''  
+func_list = {
+    "1":register,
+    "2":login
+} 
+
+choose = input(msg)
+if choose in func_list:
+    func_list[choose]()
+else:
+    print("please choose correctly")
+```
+
+9. collections:额外的数据类型
+```python
+from collections import OrderedDict,deque
+
+# OrderedDict:有序字典
+# deque：双端队列(两遍都可以操作)
+
+lst = deque([1,2,3,4,5])
+lst.append(6)  # list.append
+lst.appendleft(0)  # list.insert(0,5) 列表用insert可以在任意位置加
+print(lst)
+lst.pop()  # 删掉右边一个数
+lst.popleft() # 删掉左边一个数
+
+
+
+lst1 = [1,2,3,4,5]
+lst1.append(6)
+lst1.insert(0,5)
+print(lst1)
+lst1.pop(4)  # 参数是index
+print(lst1)
+```
+
+Counter计数器
+```python
+from collections import Counter
+lst = [1,2,4,57,3,464,776,32,5,5,5,4,4,]
+print(dict(Counter(lst)))
+
+```
+具名元祖（namedtuple）
+```python
+from collections import namedtuple
+# 创建一个名为 Color 的具名元组，包含字段 r、g、b 和 alpha
+Color = namedtuple("Color", "r g b alpha")
+# "Color" 是一个字符串，它创建的 namedtuple 的名称
+color = Color(r=50, g=205, b=50, alpha=1.0)
+print(color.r)  # 输出：50
+print(color.alpha)  # 输出：1.0
+
+# 错误示例：无法添加新字段
+color.e = 0  # AttributeError: 'Color' object has no attribute 'e'
+
+```
+defaultdict（默认值字典）
+```python
+from collections import defaultdict
+
+# 假设 document 是一个包含单词的列表
+document = ["apple", "banana", "apple", "orange", "banana", "apple"]
+
+word_count = defaultdict(int)
+for word in document:
+    # 如果我们执行 word_count['apple'] += 1，即使 'apple' 不在 word_count 中，它也会自动创建 'apple' 键，并将其值从默认值0增加到1。
+    word_count[word] += 1
+
+print(word_count)
+```
