@@ -1831,3 +1831,153 @@ for word in document:
 
 print(word_count)
 ```
+
+# 2024.4.10
+1. regular expression(import re)
+* findall : 查找所有，以列表形式返回
+* search ：从字符串任意位置查找，找到一个后停止查找，找不到返回None
+* match ：从字符串开头位置查找，找到一个后停止查找，找不到返回None
+* sub : 替换
+* split ：分隔
+* finditer ：查找内容，返回一个迭代器
+* group ： 分组取值
+     * 示例1
+```python
+import re 
+name = "JennieRuestin"
+print(re.findall("Jennie",name))
+
+```
+  * 示例2
+```python
+import re
+name = input("What's your name?").strip()
+
+#注意，在正式表达中（）表示一个group，但是在这里表达另一层含义————捕获输入的name里符合(.+), (.+)里两个（）内的具体内容并将其返回给matches
+matches = re.search(r"^(.+), ?(.+)", name) 
+#matches = re.search(r"^(.+), *(.+)", name) 即使在括号后面输入很多white space的情况下也是可以运行的
+if matches:
+    name = matches.group(2) + " " + matches.group(1) #group(1）表示re.search(r"^(.+), (.+)", name)里面capture到一个（）里面的内容
+print(f"hello, {name}")
+
+```
+  * 示例3
+```python
+import re
+ #re.sub()5个参数
+ 
+url = input("URL: ").strip()
+
+# username = re.sub(r"^(https?://)?(www\.)?twitter\.com/", "", url)
+# ————这种情况下无法做bool值判断,当输入“https://www.google.com/"的网址时就不行，就是当无法找到要背替换的值会出错
+
+matches = re.search(r"^(https?://)?(?:www\.)?twitter\.com/([a-z0-9_]+)$ ", url, re.IGNORECASE)  # 最后的(.+)表示capture
+#(?:www\.)表示不捕捉（）里面的东西，只表示这是一个group
+if matches:
+    print(matches.group(1))
+```
+  * 示例4
+```python
+import re
+email = input("What's your email?").strip()
+
+#.+@.+ 是正式表达式，.表示任意一个char，+表示至少一个或者更多。整个表达式表示在@前后至少要有一个以上char
+#.+@.+ 和 ..*@..*效果一样————第一个.表示任意一个char，之后的.*表示任意的0或者多个char 
+
+#如果要end with .edu , .+@.+.edu的方式不太合理,因为python无法将.区分究竟是表示任意char的.还是字面意思的.
+#所以给 r“.+@.+\.edu” 加上反斜杠，同时加上r表示————.edu是按照原样传入的原始字符串。r在这里的作用类似于f
+
+# r"^.+@.+\.edu$"  ————^表示以什么开头，$表示以什么结尾， 两个结合在一起用表示开头结尾都以这个格式，也即在此表达式之前和之后都不能插入其他东西
+
+# r"[^@]+@[^@]+\.edu$" ————[]表示任意的字符，[^]表示出了某个东西的任意字符，[^@]就表示出了@的任意字符
+
+# r"[a-zA-Z0-9_]+@[a-zA-Z0-9_]+\.edu$"  [a-zA-Z0-9_]表示接受a-z的大小写字符和0-9的数字和_  
+#也可以改成r"^\w+@\w+\.edu$"    \w表示任意单词字符a-z
+
+# r"^\w+@\w+\.(edu|com|gov|net)$"   表示可以以edu，或com或gov结尾，用｜表示or可以了
+
+# r"^(\w|\s)+@\w+\.(edu|com|gov|net)$"  ()表示group，里面\w|\s表示任意字符或者空白，也可以表示为这样  r"^[a-zA-Z0-9_ ]+@\w+\.(edu|com|gov|net)$"
+
+#re.IGNORECASE 表示忽视大小写，所以当输入JENNIE@SICHUAN.EDU也是有效的
+
+# r"^\w+@\w+\.\w\.edu$"  这个时候jennie@sichuan.some.edu也是可以的，但是当jennie@sichuan.edu又不行了，因为在正式表达式中域名中强制包括一个.和.edu
+# r"^\w+@(\w+\.)?\w\.edu$"  可以解决的表示（）里面的内容可以出现一次或不出现 jennie@sichuan.edu和jennie@sichuan.some.edu都可以了
+if re.search(r"^\w+@\w+\.edu$", email, re.IGNORECASE): 
+    print("valid")
+else:
+    print("invalid")
+
+```
+2. logging：日志
+* 作用：
+    * __记录程序执行的状态__
+    * 记录一些重要信息——数据库
+    * 热推——数据库
+    * 个人喜好分析（大数据）——数据库
+```python
+import logging
+# 从10级开始记录
+logging.basicConfig(
+    level=10, # 记录级别
+    format="时间：%(asctime)s 日志级别：%(levelname)s 文件名：%(filename)s 错误信息:%(message)s", # 时间 级别 文件 错误信息
+    filename="Jennie.log", # 存储进文件里面，就不再出现在屏幕中，不能以utf-8形式编码
+    filemode="a" # 不支持编码（所以如果有中文无法显示，所以不要用中文）
+)
+logging.debug(" is debug") #10级往后依次递增
+logging.info(" is info")
+
+logging.warning(" is warning")
+logging.error(" is debug")
+logging.critical(" is critical")
+
+输出
+# 2024-04-10 17:12:13,374 DEBUG decorator.py  is debug
+#  2024-04-10 17:12:13,374 INFO decorator.py  is info
+# 2024-04-10 17:12:13,374 WARNING decorator.py  is warning
+# 2024-04-10 17:12:13,374 ERROR decorator.py  is debug
+# 2024-04-10 17:12:13,374 CRITICAL decorator.py  is critical
+```
+* 自定义日志解决两个问题：存储进文件里面，就不再出现在屏幕中，不能以utf-8形式编码
+```python
+import logging
+def loger():
+    loger = logging.Logger("loger") # 创建一个框架
+    f = logging.FileHandler(filename="Jennie.log",mode="a",encoding="utf-8") # 创建Jennie.txt的文件句柄,自动创建 在lesson8
+    s = logging.StreamHandler() # 在屏幕中显示
+    format = logging.Formatter("%(asctime)s %(levelname)s %(filename)s %(message)s")
+    # 存储到文件和屏幕时的样式
+
+    loger.setLevel(logging.INFO)  # 设置记录级别，从info开始记录，也可以loger.setLevel(logging.ERROR)
+
+    f.setFormatter(format) # 给文件设置存储数据时的格式（以format的格式）
+    s.setFormatter(format) # 屏幕中也以这种模式展示
+    loger.addHandler(f) # 把文件句柄和loger对象进行绑定
+    loger.addHandler(s) # 把屏幕句柄与loger对象进行绑定
+    loger.info("is info")
+    return loger
+
+try:
+    int(input("输入数字："))
+except Exception:
+    loger().error("类型转换错误")
+
+
+```
+
+# 2024.4.11
+1. package(笔记中有自己创建的package)
+    * modules：.py文件
+    * package：具有__init__.py文件的文件夹
+
+    * package的作用：以文件夹的形式管理文件
+
+    * package的使用：文件夹.文件.功能()
+            package wangxue
+                文件__init__.py  每个package的头部文件，里面存储着与他统计的其他.py文件的功能
+                文件Jennie.py
+                    功能func()
+    * 在导入package的过程中推荐使用绝对路径：从顶级包开始查找（带__init__.py）就是绝对路径
+```python
+import wangxue.jennie as j  # 注意，包可以用.进行访问
+
+```
