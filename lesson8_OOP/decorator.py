@@ -1,38 +1,19 @@
-n,m =input().split()
-n, m = int(n),int(m)
+import string
 
-line = 1
-len1 = int(1)
-len2 = int((m - 3*len1)/2)
-line_middle = (m-7)/2
+n = int(input())
+m = 0
+lowercase_letters = list(string.ascii_lowercase)
+print_list = []
 
-while True:
-    a = len2 * "-"
-    b = len1 * ".|."
-    if line < (n+1)/2:
-        print(f"{a}{b}{a}")
-        line +=1
-        len1 +=2
-        len2 -=3
-        
-    elif line == (n+1)/2:
-        middle = int(line_middle) * "-"
-        print(f"{middle}WELCOME{middle}")
-        line +=1
-        len1 -=2
-        len2 +=3
-   
-    elif (n+1)/2 < line < n+1 :
-        
-        print(f"{a}{b}{a}")
-        line +=1
-        len1 -=2
-        len2 +=3
-    else:
-        break
-    
+while m < n:
+    middle_list = lowercase_letters[m:n]
+    middle_list.reverse()
+    middle_list = middle_list + (lowercase_letters[m + 1 : n])
+    print_list.append(middle_list)
+    m += 1
 
-        
-
-
-
+former_part = print_list.copy()
+former_part.reverse()
+new_list = former_part[: n - 1] + print_list
+for i in new_list:
+    print("-".join(i).center(4 * n - 3, "-"))

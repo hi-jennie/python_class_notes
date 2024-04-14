@@ -1774,7 +1774,7 @@ else:
 
 9. collections:额外的数据类型
 ```python
-from collections import OrderedDict,deque
+from collections import deque
 
 # OrderedDict:有序字典
 # deque：双端队列(两遍都可以操作)
