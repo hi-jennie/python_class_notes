@@ -1982,8 +1982,3 @@ import wangxue.jennie as j  # 注意，包可以用.进行访问
 
 ```
 
-# 2024.4.15 oriented object programmaing
-1. 面向对象的结构
-* 变量
-* 函数
-通过类名操作类——通过对象操作类——一个类可以实例化为多个对象
