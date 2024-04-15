@@ -1,9 +1,23 @@
-from itertools import permutations
-str_,times = input().split(" ")
 
-print_str = []
-for i in permutations(str_,int(times)):
-    print_str.append("".join(i))
+import math
+import os
+import random
+import re
+import sys
+    
+# Complete the solve function below.
+def solve(s)：
+    words = re.findall(r'\b\w+\b|\s+', s)
+    result = [word.capitalize() if word.isalpha() else word for word in words]
+    return " ".join(result)
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
 
-for i in sorted(print_str):
-    print(i)
+    s = input()
+
+    result = solve(s)
+
+    fptr.write(result + '\n')
+
+    fptr.close()
+
