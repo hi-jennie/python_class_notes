@@ -1,10 +1,9 @@
-class JenNie():
-    name = "Jennie"
-    
-    def print_():
-        print("24")
+from itertools import permutations
+str_,times = input().split(" ")
 
-J = JenNie()
-del J.name
+print_str = []
+for i in permutations(str_,int(times)):
+    print_str.append("".join(i))
 
-print(J.name)
+for i in sorted(print_str):
+    print(i)
