@@ -1,23 +1,21 @@
+class Bmi():
 
-import math
-import os
-import random
-import re
-import sys
-    
-# Complete the solve function below.
-def solve(s)：
-    words = re.findall(r'\b\w+\b|\s+', s)
-    result = [word.capitalize() if word.isalpha() else word for word in words]
-    return " ".join(result)
-if __name__ == '__main__':
-    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    def __init__(self,name,height,weight):
+        self.name = name
+        self.height = height
+        self.weight = weight
 
-    s = input()
+    def bmi(self):
+        return self.height / (self.height ** 2)
 
-    result = solve(s)
+    @property
+    def bmi2(self):
+        return self.eight / (self.height ** 2)
 
-    fptr.write(result + '\n')
+Jennie = Bmi("Jennie",1.6,43)
 
-    fptr.close()
+#  其实是在调用bmi函数
+print(Jennie.bmi())
 
+# 通过属性的方式查看
+print(Jennie.bmi2)
