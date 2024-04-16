@@ -1,21 +1,22 @@
-class Bmi():
+from collections import Counter
 
-    def __init__(self,name,height,weight):
-        self.name = name
-        self.height = height
-        self.weight = weight
+shoes_number = int(input())
+shoes_size = input().split()
+purchase_number = int(input().strip())
+inventory = dict(Counter(shoes_size))
 
-    def bmi(self):
-        return self.height / (self.height ** 2)
+total_money = []
 
-    @property
-    def bmi2(self):
-        return self.eight / (self.height ** 2)
+def uesful_number(purchase_number):
+    while purchase_number > 0:
+        size, money = input().split()
+        if size in inventory and int(inventory[size]) > 0:
+            total_money.append(int(money))
+            inventory[size] = int(inventory[size]) - 1
+        else:
+            pass
+        purchase_number -=1 
+    
+uesful_number(purchase_number)
 
-Jennie = Bmi("Jennie",1.6,43)
-
-#  其实是在调用bmi函数
-print(Jennie.bmi())
-
-# 通过属性的方式查看
-print(Jennie.bmi2)
+print(sum(total_money))
