@@ -1,13 +1,34 @@
-from collections import namedtuple
+from collections import defaultdict
+d = defaultdict(list)
+g, s = input().split()
+word = []
+subword = []
 
-def count_average_score():
-    # 获取学生数量和学生信息的字段名
-    student_number = int(input())
-    Student = namedtuple('Student', input().split())
+while int(g) > 0:
+    alpha = input()
+    word.append(alpha)
+    g = int(g) - 1
+    
+while int(s) > 0:
+    alpha = input()
+    subword.append(alpha)
+    s = int(s) - 1
 
-    # 获取所有学生的信息
-    students = [Student(*input().split()) for _ in range(student_number)]
+group = {}
+for i, alpha in enumerate(word,start=1):
+    group[i] = alpha
 
-    # 计算平均分数
-    marks = [int(student.MARKS) for student in students]
-    print(sum(marks) / len(marks))
+for i in subword:
+    if i in group.values():
+        for j in group:
+            if group[j] == i:
+                d[i].append(j)
+    else:
+        d[i].append(-1)
+            
+    
+
+for value in d.values():
+    for i in value:
+        print(i,end=" ")
+    print()   
