@@ -1,34 +1,16 @@
-from collections import defaultdict
-d = defaultdict(list)
-g, s = input().split()
-word = []
-subword = []
+times = int(input())
 
-while int(g) > 0:
-    alpha = input()
-    word.append(alpha)
-    g = int(g) - 1
-    
-while int(s) > 0:
-    alpha = input()
-    subword.append(alpha)
-    s = int(s) - 1
+value_list = []
+while times > 0:
+    m, n = input().strip().split()
+    try:
+        value_list.append(round(int(m) / int(n)))
+    except ZeroDivisionError:
+        value_list.append("Error Code: integer division or modulo by zero")
+    except ValueError:
+        x = (i for i in [m,n] if not i.isdigit())
+        value_list.append(f"Error Code: invalid literal for int() with base 10:'{next(x)}'")
+    times -=1
 
-group = {}
-for i, alpha in enumerate(word,start=1):
-    group[i] = alpha
-
-for i in subword:
-    if i in group.values():
-        for j in group:
-            if group[j] == i:
-                d[i].append(j)
-    else:
-        d[i].append(-1)
-            
-    
-
-for value in d.values():
-    for i in value:
-        print(i,end=" ")
-    print()   
+for item in value_list:
+    print(item)
